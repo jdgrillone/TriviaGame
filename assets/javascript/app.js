@@ -36,6 +36,8 @@ var isRunning = false;
   // Display initial question
   function gameStart() {
   	$('#start').hide();
+  	$('#next').hide();
+  	$("#show-timer").hide();
   	var startButton = $('<button>');
   	startButton.addClass("game-start");
   	startButton.text("Game Start");
@@ -153,6 +155,7 @@ var isRunning = false;
   
   // Displays next requested element
   function displayNext() {
+  	$("#show-timer").show();
   	
   	quiz.fadeOut(function() {
   		$('#question').remove();
