@@ -19,7 +19,15 @@ var questions = [{
 	question: "What is the name of the train that runs fastest in Japan?",
 	choices: ["Shinkansen", "Yamanotesen", "Inokashirasen", "JR Sen"],
 	correctAnswer: 0
-}
+}, {
+  question: "What is the Japanese word that means 'empty orchestra'?",
+  choices: ["Ohayo", "Karaoke", "Nihon", "Katsudon"],
+  correctAnswer: 1
+}, {
+  question: "What is 'ikebana'?",
+  choices: ["the art of flower arrangement", "a term for a sword duel", "a gambling addiction", "ones prowess of eating with sticks as a tool"],
+  correctAnswer: 0
+},
 ];
 
 var instructions = "You will be given a series of questions about Japan and it's culture.  You will have 20 seconds to answer each question.  Make your guess and click the 'Next' button to advance to the next question. Good luck!"
@@ -73,7 +81,7 @@ var isRunning = false;
     	questionCounter++;
     	displayNext();
     }
-});
+  });
   
   
   // 'Start Over' button click handler
@@ -132,9 +140,14 @@ var isRunning = false;
   	$("#show-timer").html("<h2>Time: " + numberTimer + "</h2>");
 
   	if (numberTimer === 0) {
-  		alert("Time up!");
-  		displayNext();
-  	}
+      //alerts user...I'd like to avoid using an alert for this.
+      alert("Time up!");
+      //places a wrong answer into selections array
+      selections[questionCounter] = 5;
+      //advances counter to next question
+      questionCounter++;
+      displayNext();
+    }
   }
 
   // Creates a list of the answer choices as radio inputs
@@ -159,26 +172,31 @@ var isRunning = false;
   
   // Displays next requested element
   function displayNext() {
-  	$("#show-timer").show();
-  	
+    //displays timer to page
+    $("#show-timer").show();
+  	//fades out previous question
   	quiz.fadeOut(function() {
-  		$('#question').remove();
+      //removes question from div
+      $('#question').remove();
+      //checks if there are more questions in the array
+      if(questionCounter < questions.length){
+        //resets and runs timer
+        run();
+        //sets nextQuestion to the new question
+        var nextQuestion = createQuestion(questionCounter);
+        //fades in nextQuestion
+        quiz.append(nextQuestion).fadeIn();
+        if (!(isNaN(selections[questionCounter]))) {
+          $('input[value='+selections[questionCounter]+']').prop('checked', true);
+        }
 
-  		if(questionCounter < questions.length){
-  			run();
-  			var nextQuestion = createQuestion(questionCounter);
-  			quiz.append(nextQuestion).fadeIn();
-  			if (!(isNaN(selections[questionCounter]))) {
-  				$('input[value='+selections[questionCounter]+']').prop('checked', true);
-  			}
-
-  		}else {
-  			var scoreElem = displayScore();
-  			quiz.append(scoreElem).fadeIn();
-  			$('#next').hide();
-  			$('#start').show();
-  		}
-  	});
+      }else {
+       var scoreElem = displayScore();
+       quiz.append(scoreElem).fadeIn();
+       $('#next').hide();
+       $('#start').show();
+     }
+   });
   }
   
   // Computes score and returns a paragraph element to be displayed
@@ -193,7 +211,7 @@ var isRunning = false;
   		}
   	}
 
-  	score.append('You got ' + numCorrect + ' questions out of ' +
-  		questions.length + ' right!');
+  	score.append('You scored: ' + numCorrect + ' out of ' +
+  		questions.length + ' questions.');
   	return score;
   }
