@@ -22,6 +22,8 @@ var questions = [{
 }
 ];
 
+var instructions = "You will be given a series of questions about Japan and it's culture.  You will have 20 seconds to answer each question.  Make your guess and click the 'Next' button to advance to the next question. Good luck!"
+
 var questionCounter = 0;
 var selections = [];
 //Variable to hold the game space reference
@@ -38,6 +40,9 @@ var isRunning = false;
   	$('#start').hide();
   	$('#next').hide();
   	$("#show-timer").hide();
+  	var comment = $('<p>');
+  	comment.text(instructions);
+  	$("#quiz").append(comment);
   	var startButton = $('<button>');
   	startButton.addClass("game-start");
   	startButton.text("Game Start");
@@ -51,7 +56,7 @@ var isRunning = false;
 
   gameStart();
 
-  // Click handler for the 'next' button
+  // 'Next' button click handler
   $('#next').on('click', function (e) {
   	e.preventDefault();
 
@@ -63,7 +68,7 @@ var isRunning = false;
     
     // If no user selection, progress is stopped
     if (isNaN(selections[questionCounter])) {
-    	alert('Please make a selection!');
+    	alert('Please make a guess!');
     } else {
     	questionCounter++;
     	displayNext();
@@ -71,7 +76,7 @@ var isRunning = false;
 });
   
   
-  // Click handler for the 'Start Over' button
+  // 'Start Over' button click handler
   $('#start').on('click', function (e) {
   	e.preventDefault();
 
@@ -86,23 +91,22 @@ var isRunning = false;
   	
   });
   
-  // Creates and returns the div that contains the questions and 
-  // the answer selections
+  // Creates and returns a div that contains the question and possible answers
   function createQuestion(index) {
-  	var qElement = $('<div>', {
+  	var questionDiv = $('<div>', {
   		id: 'question'
   	});
 
   	var header = $('<h2>Question ' + (index + 1) + ':</h2>');
-  	qElement.append(header);
+  	questionDiv.append(header);
 
   	var question = $('<p>').append(questions[index].question);
-  	qElement.append(question);
+  	questionDiv.append(question);
 
   	var radioButtons = createRadios(index);
-  	qElement.append(radioButtons);
+  	questionDiv.append(radioButtons);
 
-  	return qElement;
+  	return questionDiv;
   }
   //function to run when new question is displayed, set to interval every 1s
   function run() {

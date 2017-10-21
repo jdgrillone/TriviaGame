@@ -35,7 +35,16 @@ li {
     padding-right: 5px;
     position: relative;
     float:right;
-    background-color: #DCDCDC;
+    background-color: #4CED44;
     color: black;
     margin: 0 2px 0 2px;
+    text-decoration: none;
+}
+
+.button:hover {
+    background-color: #59e0a1;
+}
+
+a:hover {
+    text-decoration: none;
 }
